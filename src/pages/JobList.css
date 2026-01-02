@@ -1,0 +1,20 @@
+.filters-card {
+  margin-bottom: 30px;
+}
+
+.filters-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto auto;
+  gap: 15px;
+  align-items: center;
+}
+
+.filter-group {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .filters-form {
+    grid-template-columns: 1fr;
+  }
+}

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import './Auth.css';
+import PasswordInput from '../components/PasswordInput/PasswordInput';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -103,16 +104,12 @@ const Register = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Password</label>
-              <input
-                type="password"
+              <label>Password</label>
+              <PasswordInput
                 name="password"
-                className="form-control"
-                placeholder="Enter your password (min 6 characters)"
                 value={formData.password}
-                onChange={handleChange}
-                disabled={loading}
-                required
+                onChange={handleChange} // <--- Assure-toi que ce nom correspond à ta fonction
+                placeholder="Enter your password"
               />
             </div>
 

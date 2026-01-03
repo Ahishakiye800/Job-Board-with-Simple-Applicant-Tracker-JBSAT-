@@ -1,0 +1,87 @@
+/* Overlay pour centrer la modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(4px);
+}
+
+/* Conteneur principal blanc */
+.modal-content {
+  background: #f8fafd; /* Légèrement bleuté comme ton image */
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 900px;
+  width: 95%;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 28px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #666;
+}
+
+/* Alignement des guides en colonnes centrées */
+.guides-container {
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+/* Style des Cartes (comme tes autres icônes) */
+.guide-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  flex: 1;
+  min-width: 280px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Ombre douce */
+  text-align: left;
+  transition: transform 0.3s ease;
+  border: 1px solid #edf2f7;
+}
+
+.guide-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Icônes circulaires comme sur ton image */
+.guide-icon {
+  width: 60px;
+  height: 60px;
+  background: #edf2f7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.guide-card h3 {
+  font-size: 1.4rem;
+  color: #2d3748;
+  margin-bottom: 15px;
+}
+
+.guide-card ol {
+  padding-left: 20px;
+  color: #4a5568;
+  line-height: 1.7;
+}

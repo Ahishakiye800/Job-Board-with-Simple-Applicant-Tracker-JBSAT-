@@ -15,7 +15,6 @@ const EditJob = () => {
     company: '',
     location: '',
     job_type: 'Full-time',
-    salary_range: '',
     description: '',
     requirements: '',
     status: 'active',
@@ -36,7 +35,6 @@ const EditJob = () => {
         company: job.company,
         location: job.location,
         job_type: job.job_type,
-        salary_range: job.salary_range || '',
         description: job.description,
         requirements: job.requirements || '',
         status: job.status,
@@ -162,23 +160,7 @@ const EditJob = () => {
                     <option value="Remote">Remote</option>
                   </select>
                 </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label className="form-label">
-                    Salary Range <span className="text-muted">(Optional)</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="salary_range"
-                    className="form-control"
-                    placeholder="e.g., $80,000 - $120,000"
-                    value={formData.salary_range}
-                    onChange={handleChange}
-                  />
-                </div>
-
+                
                 <div className="form-group">
                   <label className="form-label">
                     Status <span className="text-danger">*</span>

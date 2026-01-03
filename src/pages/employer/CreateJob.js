@@ -12,7 +12,6 @@ const CreateJob = () => {
     company: '',
     location: '',
     job_type: 'Full-time',
-    salary_range: '',
     description: '',
     requirements: '',
   });
@@ -116,19 +115,6 @@ const CreateJob = () => {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">
-                  Salary Range <span className="text-muted">(Optional)</span>
-                </label>
-                <input
-                  type="text"
-                  name="salary_range"
-                  className="form-control"
-                  placeholder="e.g., $80,000 - $120,000"
-                  value={formData.salary_range}
-                  onChange={handleChange}
-                />
-              </div>
 
               <div className="form-group">
                 <label className="form-label">
@@ -150,7 +136,7 @@ const CreateJob = () => {
 
               <div className="form-group">
                 <label className="form-label">
-                  Requirements <span className="text-muted">(Optional)</span>
+                  Requirements <span className="text-danger">*</span>
                 </label>
                 <textarea
                   name="requirements"

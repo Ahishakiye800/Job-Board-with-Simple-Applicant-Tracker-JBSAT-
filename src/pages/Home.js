@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import GuideModal from '../components/UserGuide/GuideModal'; // Vérifie bien le chemin
 import './Home.css';
 
 const Home = () => {
   const { isAuthenticated, isEmployer, isSeeker } = useAuth();
+  
+  // État pour gérer l'ouverture de la modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="home-page">
@@ -20,6 +24,15 @@ const Home = () => {
             </p>
             
             <div className="hero-buttons">
+              {/* Nouveau Bouton User Guide */}
+              <button 
+                className="btn btn-guide btn-lg" 
+                onClick={() => setIsModalOpen(true)}
+                style={{ marginRight: '10px', backgroundColor: '#3498db', color: 'white' }}
+              >
+                📖 User Guide
+              </button>
+
               {!isAuthenticated ? (
                 <>
                   <Link to="/register" className="btn btn-primary btn-lg">
@@ -57,6 +70,12 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* La Modal (cachée par défaut) */}
+      <GuideModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
 
       {/* Features Section */}
       <section className="features-section">
@@ -123,6 +142,15 @@ const Home = () => {
             <p className="cta-subtitle">
               Join thousands of job seekers and employers today
             </p>
+            {!isAuthenticated && (
+              <button 
+                onClick={() => setIsModalOpen(true)} 
+                className="btn btn-outline btn-lg"
+                style={{ marginBottom: '20px', display: 'block', margin: '0 auto 20px' }}
+              >
+                View User Guide
+              </button>
+            )}
             {!isAuthenticated && (
               <Link to="/register" className="btn btn-primary btn-lg">
                 Create Free Account

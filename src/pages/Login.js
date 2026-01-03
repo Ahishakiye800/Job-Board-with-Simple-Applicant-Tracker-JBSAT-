@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import './Auth.css';
+import PasswordInput from '../components/PasswordInput/PasswordInput';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -64,15 +65,12 @@ const Login = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Password</label>
-              <input
-                type="password"
+              <label>Password</label>
+              <PasswordInput
                 name="password"
-                className="form-control"
-                placeholder="Enter your password"
                 value={formData.password}
-                onChange={handleChange}
-                required
+                onChange={handleChange} 
+                placeholder="Enter your password"
               />
             </div>
 

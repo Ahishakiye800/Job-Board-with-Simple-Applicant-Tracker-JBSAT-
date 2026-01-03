@@ -28,12 +28,6 @@ const JobCard = ({ job }) => {
         {job.location}
       </div>
 
-      {job.salary_range && (
-        <div className="job-salary">
-          <span className="salary-icon">💰</span>
-          {job.salary_range}
-        </div>
-      )}
 
       <p className="job-description">
         {job.description.substring(0, 150)}...

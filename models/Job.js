@@ -6,9 +6,9 @@ class Job {
     const query = `
       INSERT INTO jobs (
         employer_id, title, company, location, job_type, 
-        salary_range, description, requirements
+         description, requirements
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *
     `;
     
@@ -18,7 +18,6 @@ class Job {
       jobData.company,
       jobData.location,
       jobData.job_type,
-      jobData.salary_range,
       jobData.description,
       jobData.requirements
     ];
@@ -90,7 +89,6 @@ class Job {
         company = COALESCE($2, company),
         location = COALESCE($3, location),
         job_type = COALESCE($4, job_type),
-        salary_range = COALESCE($5, salary_range),
         description = COALESCE($6, description),
         requirements = COALESCE($7, requirements),
         status = COALESCE($8, status),
@@ -104,7 +102,6 @@ class Job {
       jobData.company,
       jobData.location,
       jobData.job_type,
-      jobData.salary_range,
       jobData.description,
       jobData.requirements,
       jobData.status,

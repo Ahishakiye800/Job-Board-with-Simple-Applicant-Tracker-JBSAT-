@@ -3,7 +3,7 @@ const Job = require('../models/Job');
 
 exports.createJob = async (req, res) => {
   try {
-    const { title, company, location, job_type, salary_range, description, requirements } = req.body;
+    const { title, company, location, job_type, description, requirements } = req.body;
 
     if (!title || !company || !location || !job_type || !description) {
       return res.status(400).json({
@@ -18,7 +18,6 @@ exports.createJob = async (req, res) => {
       company,
       location,
       job_type,
-      salary_range: salary_range || null,
       description,
       requirements: requirements || null
     };

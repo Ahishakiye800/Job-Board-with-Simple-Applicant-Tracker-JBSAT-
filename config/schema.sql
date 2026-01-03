@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS jobs (
     company VARCHAR(255) NOT NULL,
     location VARCHAR(255) NOT NULL,
     job_type VARCHAR(50) NOT NULL,
-    salary_range VARCHAR(100),
     description TEXT NOT NULL,
     requirements TEXT,
     status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'closed')),

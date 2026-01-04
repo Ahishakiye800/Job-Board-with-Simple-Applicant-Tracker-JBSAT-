@@ -1,7 +1,7 @@
 
 const jwt = require('jsonwebtoken');
 
-const authMiddleware = (req, res, next) => {
+export const authMiddleware = (req, res, next) => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
 
@@ -23,7 +23,7 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-const employerOnly = (req, res, next) => {
+export const employerOnly = (req, res, next) => {
   if (req.user.role !== 'employer') {
     return res.status(403).json({ 
       success: false,
@@ -33,7 +33,7 @@ const employerOnly = (req, res, next) => {
   next();
 };
 
-const seekerOnly = (req, res, next) => {
+export const seekerOnly = (req, res, next) => {
   if (req.user.role !== 'seeker') {
     return res.status(403).json({ 
       success: false,
@@ -43,4 +43,3 @@ const seekerOnly = (req, res, next) => {
   next();
 };
 
-module.exports = { authMiddleware, employerOnly, seekerOnly };

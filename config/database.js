@@ -27,23 +27,38 @@
 
 
 // config/database.js
-import pkg from 'pg';
-const { Pool } = pkg;
+// import pkg from 'pg';
+// const { Pool } = pkg;
 
-export const pool = new Pool({
+// export const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// });
+
+// // Create the named export that server.js is looking for
+// export const initializeDatabase = async () => {
+//   const client = await pool.connect();
+//   try {
+//     const res = await client.query('SELECT NOW()');
+//     console.log('✅ Postgres Connected:', res.rows[0].now);
+//   } finally {
+//     client.release();
+//   }
+// };
+
+
+import pg from 'pg'; // In ESM, we import the whole package
+const { Pool } = pg;
+import 'dotenv/config';
+
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false
+    rejectUnauthorized: false // Required for Render/External DBs
   }
 });
 
-// Create the named export that server.js is looking for
-export const initializeDatabase = async () => {
-  const client = await pool.connect();
-  try {
-    const res = await client.query('SELECT NOW()');
-    console.log('✅ Postgres Connected:', res.rows[0].now);
-  } finally {
-    client.release();
-  }
-};
+// THIS IS THE FIX:
+export default pool;

@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import initializeDatabase from "./config/initDb.js";
+const cors = require("cors");
 
 dotenv.config();
 

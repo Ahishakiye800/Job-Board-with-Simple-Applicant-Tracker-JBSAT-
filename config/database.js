@@ -25,17 +25,16 @@
 //   process.exit(-1);
 // });
 
-// module.exports = pool;
-const { Pool } = require('pg');
 
-// Cette configuration est la SEULE qui marche sur Render
+import pkg from 'pg';
+const { Pool } = pkg;
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Lit l'URL complète
+  connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false // OBLIGATOIRE pour Render
+    rejectUnauthorized: false
   }
 });
-
 // Petit test de log pour debug
 console.log('Attempting to connect to database via URL:', process.env.DATABASE_URL ? 'URL is set' : 'URL is MISSING');
 

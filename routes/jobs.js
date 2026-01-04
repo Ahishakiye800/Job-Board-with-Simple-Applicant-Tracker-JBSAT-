@@ -18,23 +18,32 @@
 // module.exports = router;
 
 
+
+
+
 import express from 'express';
-import { getMyJobs, getAllJobs, createJob } from '../controllers/jobController.js';
+// CHANGE: getMyJobs -> getEmployerJobs
+import { 
+  getEmployerJobs, 
+  getAllJobs, 
+  createJob, 
+  getJobById, 
+  updateJob, 
+  deleteJob 
+} from '../controllers/jobController.js'; 
 import { authMiddleware, employerOnly } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/employer/my-jobs', authMiddleware, employerOnly, getMyJobs);
+// Public routes
+router.get('/', getAllJobs);
 
-// GET /api/jobs
-router.get('/', async (req, res) => {
-  // Logic: Fetch all jobs from DB
-  res.json([{ id: 1, title: "Frontend Developer", company: "TechCorp" }]);
-});
+// Employer routes (Specific routes must come BEFORE dynamic :id routes)
+router.get('/employer/my-jobs', authMiddleware, employerOnly, getEmployerJobs);
 
-// POST /api/jobs (Employer Only)
-router.post('/', async (req, res) => {
-  res.status(201).json({ message: "Job created successfully" });
-});
+// Dynamic routes
+router.get('/:id', getJobById);
+router.put('/:id', authMiddleware, employerOnly, updateJob);
+router.delete('/:id', authMiddleware, employerOnly, deleteJob);
 
 export default router;

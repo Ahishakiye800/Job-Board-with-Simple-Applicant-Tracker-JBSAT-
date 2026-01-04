@@ -1,5 +1,5 @@
-
-const jwt = require('jsonwebtoken');
+// CHANGE THIS LINE:
+import jwt from 'jsonwebtoken';
 
 export const authMiddleware = (req, res, next) => {
   try {
@@ -42,4 +42,3 @@ export const seekerOnly = (req, res, next) => {
   }
   next();
 };
-

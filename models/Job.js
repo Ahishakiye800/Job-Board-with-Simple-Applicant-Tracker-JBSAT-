@@ -1,5 +1,5 @@
-
-const pool = require('../config/database');
+// 1. Change require to import with .js extension
+import pool from '../config/database.js';
 
 class Job {
   static async create(jobData) {
@@ -89,11 +89,11 @@ class Job {
         company = COALESCE($2, company),
         location = COALESCE($3, location),
         job_type = COALESCE($4, job_type),
-        description = COALESCE($6, description),
-        requirements = COALESCE($7, requirements),
-        status = COALESCE($8, status),
+        description = COALESCE($5, description),
+        requirements = COALESCE($6, requirements),
+        status = COALESCE($7, status),
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = $9
+      WHERE id = $8
       RETURNING *
     `;
     
@@ -132,4 +132,5 @@ class Job {
   }
 }
 
-module.exports = Job;
+// 2. Change module.exports to export default
+export default Job;

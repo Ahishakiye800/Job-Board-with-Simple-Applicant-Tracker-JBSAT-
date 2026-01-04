@@ -1,9 +1,10 @@
-
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const applicationController = require('../controllers/applicationController');
-const { authMiddleware, employerOnly, seekerOnly } = require('../middleware/auth');
-const { upload } = require('../config/cloudinary');
+
+// NOTE: You must update these imports to use 'import' and add '.js' extensions
+import * as applicationController from '../controllers/applicationController.js';
+import { authMiddleware, employerOnly, seekerOnly } from '../middleware/auth.js';
+import { upload } from '../config/cloudinary.js';
 
 // Seeker routes
 router.post(
@@ -13,6 +14,7 @@ router.post(
   upload.single('resume'),
   applicationController.submitApplication
 );
+
 router.get(
   '/my-applications',
   authMiddleware,
@@ -27,18 +29,21 @@ router.get(
   employerOnly,
   applicationController.getJobApplications
 );
+
 router.get(
   '/employer/all',
   authMiddleware,
   employerOnly,
   applicationController.getEmployerApplications
 );
+
 router.put(
   '/:id/status',
   authMiddleware,
   employerOnly,
   applicationController.updateApplicationStatus
 );
+
 router.get(
   '/employer/stats',
   authMiddleware,
@@ -46,4 +51,5 @@ router.get(
   applicationController.getApplicationStats
 );
 
-module.exports = router;
+// CHANGE THIS:
+export default router;

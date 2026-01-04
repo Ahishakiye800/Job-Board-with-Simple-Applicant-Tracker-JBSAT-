@@ -60,5 +60,15 @@ const pool = new Pool({
   }
 });
 
+export const initializeDatabase = async () => {
+  try {
+    const client = await pool.connect();
+    console.log("✅ Successfully connected to PostgreSQL");
+    client.release();
+  } catch (err) {
+    console.error("❌ Database connection error:", err.stack);
+    throw err;
+  }
+};
 // THIS IS THE FIX:
 export default pool;

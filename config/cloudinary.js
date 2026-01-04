@@ -1,20 +1,21 @@
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import multer from 'multer';
 
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const multer = require('multer');
-
+// Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Setup Cloudinary Storage for Multer
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'job-board/resumes',
     allowed_formats: ['pdf', 'doc', 'docx'],
-    resource_type: 'raw',
+    resource_type: 'auto', // Changed to 'auto' to better handle different file types
     public_id: (req, file) => {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
       return `resume-${uniqueSuffix}`;
@@ -22,6 +23,7 @@ const storage = new CloudinaryStorage({
   },
 });
 
+// File validation filter
 const fileFilter = (req, file, cb) => {
   const allowedTypes = [
     'application/pdf',
@@ -36,13 +38,14 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// Initialize Multer
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
-    fileSize: 5 * 1024 * 1024,
+    fileSize: 5 * 1024 * 1024, // 5MB limit
   },
 });
 
-// NEW WAY
+// Correct ES Module Exports
 export { upload, cloudinary };

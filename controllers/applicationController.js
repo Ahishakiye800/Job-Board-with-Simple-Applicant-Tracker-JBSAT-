@@ -1,9 +1,8 @@
+import Application from '../models/Application.js';
+import Job from '../models/Job.js';
+import User from '../models/User.js';
 
-const Application = require('../models/Application');
-const Job = require('../models/Job');
-const User = require('../models/User');
-
-exports.submitApplication = async (req, res) => {
+export const submitApplication = async (req, res) => {
   try {
     const { job_id, cover_letter } = req.body;
 
@@ -71,7 +70,7 @@ exports.submitApplication = async (req, res) => {
   }
 };
 
-exports.getSeekerApplications = async (req, res) => {
+export const getSeekerApplications = async (req, res) => {
   try {
     const applications = await Application.findBySeekerId(req.user.id);
 
@@ -89,7 +88,7 @@ exports.getSeekerApplications = async (req, res) => {
   }
 };
 
-exports.getJobApplications = async (req, res) => {
+export const getJobApplications = async (req, res) => {
   try {
     const { jobId } = req.params;
 
@@ -124,7 +123,7 @@ exports.getJobApplications = async (req, res) => {
   }
 };
 
-exports.getEmployerApplications = async (req, res) => {
+export const getEmployerApplications = async (req, res) => {
   try {
     const applications = await Application.findByEmployerId(req.user.id);
 
@@ -142,7 +141,7 @@ exports.getEmployerApplications = async (req, res) => {
   }
 };
 
-exports.updateApplicationStatus = async (req, res) => {
+export const updateApplicationStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -186,7 +185,7 @@ exports.updateApplicationStatus = async (req, res) => {
   }
 };
 
-exports.getApplicationStats = async (req, res) => {
+export const getApplicationStats = async (req, res) => {
   try {
     const stats = await Application.getEmployerStats(req.user.id);
 

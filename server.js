@@ -56,8 +56,8 @@ import { initializeDatabase } from './config/database.js';
 
 // Import Routes
 import authRoutes from './routes/auth.js';
-// import jobRoutes from './routes/jobs.js';
-// import applicationRoutes from './routes/applications.js';
+import jobRoutes from './routes/jobs.js';
+import applicationRoutes from './routes/applications.js';
 
 const app = express();
 
@@ -79,8 +79,8 @@ app.use('/uploads', express.static('uploads'));
 
 // Routes Mounting (This matches your frontend api.js paths)
 app.use('/api/auth', authRoutes);
-// app.use('/api/jobs', jobRoutes);
-// app.use('/api/applications', applicationRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', applicationRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

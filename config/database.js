@@ -26,16 +26,24 @@
 // });
 
 
+// config/database.js
 import pkg from 'pg';
 const { Pool } = pkg;
 
-const pool = new Pool({
+export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
 });
-// Petit test de log pour debug
-console.log('Attempting to connect to database via URL:', process.env.DATABASE_URL ? 'URL is set' : 'URL is MISSING');
 
-export default pool;
+// Create the named export that server.js is looking for
+export const initializeDatabase = async () => {
+  const client = await pool.connect();
+  try {
+    const res = await client.query('SELECT NOW()');
+    console.log('✅ Postgres Connected:', res.rows[0].now);
+  } finally {
+    client.release();
+  }
+};

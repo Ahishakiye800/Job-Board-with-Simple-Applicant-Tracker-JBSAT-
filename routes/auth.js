@@ -22,7 +22,7 @@ router.post('/register', async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
     // logic: Hash password, save user to DB, generate JWT
-    const token = "mock_jwt_token"; 
+    //const token = "mock_jwt_token"; 
     res.status(201).json({ token, user: { name, email, role } });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -41,4 +41,5 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.get('/me', authMiddleware, getMe);
 export default router;

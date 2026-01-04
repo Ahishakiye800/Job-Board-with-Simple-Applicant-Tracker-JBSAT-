@@ -19,7 +19,12 @@
 
 
 import express from 'express';
+import { getMyJobs, getAllJobs, createJob } from '../controllers/jobController.js';
+import { authMiddleware, employerOnly } from '../middleware/auth.js';
+
 const router = express.Router();
+
+router.get('/employer/my-jobs', authMiddleware, employerOnly, getMyJobs);
 
 // GET /api/jobs
 router.get('/', async (req, res) => {

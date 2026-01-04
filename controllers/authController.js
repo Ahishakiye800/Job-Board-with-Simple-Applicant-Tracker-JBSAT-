@@ -1,15 +1,24 @@
-import User from '../models/User.js'; // Ensure the .js extension is included
+import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 
-// Generate JWT token
+/**
+ * Generates a unique JWT token.
+ * The "iat" (issued at) claim included by default by jwt.sign ensures 
+ * that the token changes every second, even for the same payload.
+ */
 const generateToken = (user) => {
+  // Security check for the secret key
+  if (!process.env.JWT_SECRET) {
+    console.warn("⚠️ JWT_SECRET is not defined in environment variables!");
+  }
+
   return jwt.sign(
     { 
       id: user.id, 
       email: user.email, 
       role: user.role 
     },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET || 'development_fallback_secret', // Always use an env variable in production
     { expiresIn: '7d' }
   );
 };
@@ -27,13 +36,6 @@ export const register = async (req, res) => {
       });
     }
 
-    if (role !== 'employer' && role !== 'seeker') {
-      return res.status(400).json({
-        success: false,
-        error: 'Role must be either employer or seeker'
-      });
-    }
-
     const existingUser = await User.findByEmail(email);
     if (existingUser) {
       return res.status(400).json({
@@ -43,6 +45,8 @@ export const register = async (req, res) => {
     }
 
     const user = await User.create({ name, email, password, role });
+    
+    // Generate a fresh token
     const token = generateToken(user);
 
     res.status(201).json({
@@ -56,7 +60,7 @@ export const register = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Register error:', error);
+    console.error('Register Error:', error);
     res.status(500).json({
       success: false,
       error: 'Server error during registration'
@@ -93,6 +97,7 @@ export const login = async (req, res) => {
       });
     }
 
+    // Generate token after password verification
     const token = generateToken(user);
 
     res.json({
@@ -106,7 +111,7 @@ export const login = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('Login Error:', error);
     res.status(500).json({
       success: false,
       error: 'Server error during login'
@@ -118,6 +123,7 @@ export const login = async (req, res) => {
 // @route   GET /api/auth/me
 export const getMe = async (req, res) => {
   try {
+    // req.user is injected by the authMiddleware
     const user = await User.findById(req.user.id);
     
     if (!user) {
@@ -132,7 +138,7 @@ export const getMe = async (req, res) => {
       user
     });
   } catch (error) {
-    console.error('Get user error:', error);
+    console.error('GetMe Error:', error);
     res.status(500).json({
       success: false,
       error: 'Server error'

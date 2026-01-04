@@ -8,4 +8,14 @@ const pool = new Pool({
   },
 });
 
-export default pool;
+const initializeDatabase = async () => {
+  try {
+    await pool.query("SELECT 1");
+    console.log("✅ Database initialized");
+  } catch (error) {
+    console.error("❌ Database initialization failed:", error);
+    throw error;
+  }
+};
+
+export default initializeDatabase;

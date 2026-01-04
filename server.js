@@ -4,9 +4,11 @@ import initializeDatabase from "./config/initDb.js";
 
 dotenv.config();
 
+console.log("INIT DB TYPE:", typeof initializeDatabase);
+
 const app = express();
 
-initializeDatabase(); // ✅ MAINTENANT ÇA MARCHE
+await initializeDatabase(); // 🔥 IMPORTANT sur Render
 
 app.use(express.json());
 

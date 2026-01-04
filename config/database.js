@@ -38,4 +38,4 @@ const pool = new Pool({
 // Petit test de log pour debug
 console.log('Attempting to connect to database via URL:', process.env.DATABASE_URL ? 'URL is set' : 'URL is MISSING');
 
-module.exports = pool;
+export default pool;

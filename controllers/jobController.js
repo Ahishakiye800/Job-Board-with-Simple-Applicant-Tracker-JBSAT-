@@ -1,7 +1,8 @@
+import Job from '../models/Job.js'; // Ensure the .js extension is present
 
-const Job = require('../models/Job');
-
-exports.createJob = async (req, res) => {
+// @desc    Create new job
+// @route   POST /api/jobs
+export const createJob = async (req, res) => {
   try {
     const { title, company, location, job_type, description, requirements } = req.body;
 
@@ -37,7 +38,9 @@ exports.createJob = async (req, res) => {
   }
 };
 
-exports.getAllJobs = async (req, res) => {
+// @desc    Get all jobs
+// @route   GET /api/jobs
+export const getAllJobs = async (req, res) => {
   try {
     const filters = {
       search: req.query.search,
@@ -61,7 +64,9 @@ exports.getAllJobs = async (req, res) => {
   }
 };
 
-exports.getJobById = async (req, res) => {
+// @desc    Get job by ID
+// @route   GET /api/jobs/:id
+export const getJobById = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
 
@@ -85,7 +90,9 @@ exports.getJobById = async (req, res) => {
   }
 };
 
-exports.getEmployerJobs = async (req, res) => {
+// @desc    Get employer jobs
+// @route   GET /api/jobs/employer/my-jobs
+export const getEmployerJobs = async (req, res) => {
   try {
     const jobs = await Job.findByEmployerId(req.user.id);
 
@@ -103,7 +110,9 @@ exports.getEmployerJobs = async (req, res) => {
   }
 };
 
-exports.updateJob = async (req, res) => {
+// @desc    Update job
+// @route   PUT /api/jobs/:id
+export const updateJob = async (req, res) => {
   try {
     const existingJob = await Job.findById(req.params.id);
     
@@ -136,7 +145,9 @@ exports.updateJob = async (req, res) => {
   }
 };
 
-exports.deleteJob = async (req, res) => {
+// @desc    Delete job
+// @route   DELETE /api/jobs/:id
+export const deleteJob = async (req, res) => {
   try {
     const existingJob = await Job.findById(req.params.id);
     
@@ -169,7 +180,9 @@ exports.deleteJob = async (req, res) => {
   }
 };
 
-exports.getEmployerStats = async (req, res) => {
+// @desc    Get employer statistics
+// @route   GET /api/jobs/employer/stats
+export const getEmployerStats = async (req, res) => {
   try {
     const stats = await Job.getEmployerStats(req.user.id);
 

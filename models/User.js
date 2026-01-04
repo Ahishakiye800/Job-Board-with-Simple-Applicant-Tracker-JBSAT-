@@ -1,5 +1,6 @@
-const pool = require('../config/database');
-const bcrypt = require('bcryptjs');
+// 1. Change require to import (Always include the .js extension for local files)
+import pool from '../config/database.js';
+import bcrypt from 'bcryptjs';
 
 class User {
   // Create new user
@@ -37,4 +38,5 @@ class User {
   }
 }
 
-module.exports = User;
+// 2. THE FIX: Change from module.exports to export default
+export default User;

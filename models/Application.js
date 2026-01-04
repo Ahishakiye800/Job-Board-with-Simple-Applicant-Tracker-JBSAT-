@@ -1,4 +1,5 @@
-const pool = require('../config/database');
+// 1. Change require to import (ensure the .js extension is present)
+import pool from '../config/database.js';
 
 class Application {
   // Create new application
@@ -26,14 +27,12 @@ class Application {
     return result.rows[0];
   }
 
-  // Check if user already applied to a job
   static async checkExisting(jobId, seekerId) {
     const query = 'SELECT * FROM applications WHERE job_id = $1 AND seeker_id = $2';
     const result = await pool.query(query, [jobId, seekerId]);
     return result.rows[0];
   }
 
-  // Get all applications for a specific job
   static async findByJobId(jobId) {
     const query = `
       SELECT a.*, j.title as job_title, j.company
@@ -46,7 +45,6 @@ class Application {
     return result.rows;
   }
 
-  // Get all applications by a seeker
   static async findBySeekerId(seekerId) {
     const query = `
       SELECT a.*, j.title as job_title, j.company, j.location, j.job_type
@@ -59,7 +57,6 @@ class Application {
     return result.rows;
   }
 
-  // Get applications for all jobs of an employer
   static async findByEmployerId(employerId) {
     const query = `
       SELECT a.*, j.title as job_title, j.company
@@ -72,7 +69,6 @@ class Application {
     return result.rows;
   }
 
-  // Get single application by ID
   static async findById(id) {
     const query = `
       SELECT a.*, j.title as job_title, j.company, j.employer_id
@@ -84,7 +80,6 @@ class Application {
     return result.rows[0];
   }
 
-  // Update application status
   static async updateStatus(id, status) {
     const query = `
       UPDATE applications 
@@ -96,7 +91,6 @@ class Application {
     return result.rows[0];
   }
 
-  // Get application statistics for employer
   static async getEmployerStats(employerId) {
     const query = `
       SELECT 
@@ -115,4 +109,5 @@ class Application {
   }
 }
 
-module.exports = Application;
+// 2. Change module.exports to export default
+export default Application;

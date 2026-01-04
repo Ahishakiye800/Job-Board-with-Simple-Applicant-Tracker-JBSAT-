@@ -68,12 +68,14 @@ try {
 } catch (error) {
     console.error("❌ Database initialization error:", error);
 }
-
-// Middleware
 app.use(cors({
-  origin: ["http://localhost:3000", "https://your-frontend-link.onrender.com"],
-  credentials: true
+  origin: '*', // For development. Use your specific frontend URL in production.
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+// Middleware
+
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 

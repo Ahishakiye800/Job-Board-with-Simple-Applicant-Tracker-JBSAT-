@@ -1,21 +1,11 @@
-import pkg from "pg";
-const { Pool } = pkg;
+import pool from './database.js';
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-const initializeDatabase = async () => {
+export async function initializeDatabase() {
   try {
-    await pool.query("SELECT 1");
-    console.log("✅ Database initialized");
+    await pool.query('SELECT 1');
+    console.log('✅ Database connected successfully');
   } catch (error) {
-    console.error("❌ Database initialization failed:", error);
+    console.error('❌ Database initialization failed:', error);
     throw error;
   }
-};
-
-export default initializeDatabase;
+}

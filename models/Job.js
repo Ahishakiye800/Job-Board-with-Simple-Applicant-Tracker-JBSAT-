@@ -1,14 +1,18 @@
-// 1. Change require to import with .js extension
+
 import pool from '../config/database.js';
 
+
 class Job {
+  /**
+   * Create a new job listing
+   */
   static async create(jobData) {
     const query = `
       INSERT INTO jobs (
         employer_id, title, company, location, job_type, 
-         description, requirements
+        description, requirements, status
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *
     `;
     
@@ -19,13 +23,17 @@ class Job {
       jobData.location,
       jobData.job_type,
       jobData.description,
-      jobData.requirements
+      jobData.requirements,
+      'active' // Default status to active on creation
     ];
     
     const result = await pool.query(query, values);
     return result.rows[0];
   }
 
+  /**
+   * Find all active jobs with optional filtering
+   */
   static async findAll(filters = {}) {
     let query = `
       SELECT j.*, u.name as employer_name, u.email as employer_email
@@ -60,6 +68,9 @@ class Job {
     return result.rows;
   }
 
+  /**
+   * Find a specific job by ID
+   */
   static async findById(id) {
     const query = `
       SELECT j.*, u.name as employer_name, u.email as employer_email
@@ -71,6 +82,9 @@ class Job {
     return result.rows[0];
   }
 
+  /**
+   * Get all jobs belonging to a specific employer
+   */
   static async findByEmployerId(employerId) {
     const query = `
       SELECT * FROM jobs 
@@ -81,6 +95,9 @@ class Job {
     return result.rows;
   }
 
+  /**
+   * Update job details
+   */
   static async update(id, jobData) {
     const query = `
       UPDATE jobs 
@@ -112,25 +129,34 @@ class Job {
     return result.rows[0];
   }
 
+  /**
+   * Delete a job listing
+   */
   static async delete(id) {
     const query = 'DELETE FROM jobs WHERE id = $1 RETURNING *';
     const result = await pool.query(query, [id]);
     return result.rows[0];
   }
 
+  /**
+   * Get comprehensive dashboard stats for an employer
+   */
   static async getEmployerStats(employerId) {
     const query = `
       SELECT 
-        COUNT(*) as total_jobs,
-        COUNT(CASE WHEN status = 'active' THEN 1 END) as active_jobs,
-        COUNT(CASE WHEN status = 'closed' THEN 1 END) as closed_jobs
-      FROM jobs
-      WHERE employer_id = $1
+        COUNT(DISTINCT j.id) as total_jobs,
+        COUNT(DISTINCT CASE WHEN j.status = 'active' THEN j.id END) as active_jobs,
+        COUNT(DISTINCT CASE WHEN j.status = 'closed' THEN j.id END) as closed_jobs,
+        COUNT(a.id) as total_applications,
+        COUNT(CASE WHEN a.status = 'pending' THEN 1 END) as new_applications
+      FROM jobs j
+      LEFT JOIN applications a ON j.id = a.job_id
+      WHERE j.employer_id = $1
     `;
     const result = await pool.query(query, [employerId]);
     return result.rows[0];
   }
 }
 
-// 2. Change module.exports to export default
+
 export default Job;

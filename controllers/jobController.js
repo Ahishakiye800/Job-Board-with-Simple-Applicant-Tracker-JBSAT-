@@ -145,7 +145,7 @@ export const updateJob = async (req, res) => {
   }
 };
 
-// @desc    Delete job
+
 // @route   DELETE /api/jobs/:id
 export const deleteJob = async (req, res) => {
   try {
@@ -180,7 +180,7 @@ export const deleteJob = async (req, res) => {
   }
 };
 
-// @desc    Get employer statistics
+
 // @route   GET /api/jobs/employer/stats
 export const getEmployerStats = async (req, res) => {
   try {

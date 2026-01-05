@@ -49,15 +49,44 @@
 // };
 
 
-import pg from 'pg'; // In ESM, we import the whole package
-const { Pool } = pg;
-import 'dotenv/config';
+// import pg from 'pg'; // In ESM, we import the whole package
+// const { Pool } = pg;
+// import 'dotenv/config';
 
-const pool = new Pool({
+// const pool = new pg.Pool({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false // Required for Render/External DBs
+//   }
+// });
+
+// export const initializeDatabase = async () => {
+//   try {
+//     const client = await pool.connect();
+//     console.log("✅ Successfully connected to PostgreSQL");
+//     client.release();
+//   } catch (err) {
+//     console.error("❌ Database connection error:", err.stack);
+//     throw err;
+//   }
+// };
+// // THIS IS THE FIX:
+// export default pool;
+
+
+
+
+import pg from 'pg';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false // Required for Render/External DBs
-  }
+
+  ssl: process.env.DATABASE_URL.includes('render.com') || process.env.NODE_ENV === 'production' 
+    ? { rejectUnauthorized: false } 
+    : false
 });
 
 export const initializeDatabase = async () => {
@@ -70,5 +99,5 @@ export const initializeDatabase = async () => {
     throw err;
   }
 };
-// THIS IS THE FIX:
+
 export default pool;

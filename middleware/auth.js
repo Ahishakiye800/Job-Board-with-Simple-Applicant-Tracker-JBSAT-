@@ -1,44 +1,27 @@
-// CHANGE THIS LINE:
+// middleware/auth.js
 import jwt from 'jsonwebtoken';
 
 export const authMiddleware = (req, res, next) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+
+  if (!token) {
+    return res.status(401).json({ success: false, error: 'No token, authorization denied' });
+  }
+
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-
-    if (!token) {
-      return res.status(401).json({ 
-        success: false,
-        error: 'No authentication token, access denied' 
-      });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'development_secret');
+    req.user = decoded; // This attaches the user id and role to the request
     next();
-  } catch (error) {
-    res.status(401).json({ 
-      success: false,
-      error: 'Token is not valid' 
-    });
+  } catch (err) {
+    res.status(401).json({ success: false, error: 'Token is not valid' });
   }
 };
 
+// If you have employerOnly, export it the same way:
 export const employerOnly = (req, res, next) => {
-  if (req.user.role !== 'employer') {
-    return res.status(403).json({ 
-      success: false,
-      error: 'Access denied. Employers only.' 
-    });
+  if (req.user && req.user.role === 'employer') {
+    next();
+  } else {
+    res.status(403).json({ success: false, error: 'Access denied. Employers only.' });
   }
-  next();
-};
-
-export const seekerOnly = (req, res, next) => {
-  if (req.user.role !== 'seeker') {
-    return res.status(403).json({ 
-      success: false,
-      error: 'Access denied. Job seekers only.' 
-    });
-  }
-  next();
 };

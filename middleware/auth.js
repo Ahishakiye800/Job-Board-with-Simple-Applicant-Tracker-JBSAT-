@@ -17,11 +17,20 @@ export const authMiddleware = (req, res, next) => {
   }
 };
 
-// If you have employerOnly, export it the same way:
+
 export const employerOnly = (req, res, next) => {
   if (req.user && req.user.role === 'employer') {
     next();
   } else {
     res.status(403).json({ success: false, error: 'Access denied. Employers only.' });
+  }
+};
+
+
+export const seekerOnly = (req, res, next) => {
+  if (req.user && req.user.role === 'seeker') {
+    next();
+  } else {
+    res.status(403).json({ success: false, error: 'Access denied. Seekers only.' });
   }
 };

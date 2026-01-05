@@ -25,6 +25,6 @@ router.post('/register', register);
 router.post('/login', login);
 
 // Protected route - requires the authMiddleware we just imported
-router.get('auth/me', authMiddleware, getMe);
+router.get('/me', authMiddleware, getMe);
 
 export default router;

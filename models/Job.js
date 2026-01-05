@@ -147,8 +147,7 @@ class Job {
         COUNT(DISTINCT j.id) as total_jobs,
         COUNT(DISTINCT CASE WHEN j.status = 'active' THEN j.id END) as active_jobs,
         COUNT(DISTINCT CASE WHEN j.status = 'closed' THEN j.id END) as closed_jobs,
-        COUNT(a.id) as total_applications,
-        COUNT(CASE WHEN a.status = 'pending' THEN 1 END) as new_applications
+        COUNT(a.id) as total_applications
       FROM jobs j
       LEFT JOIN applications a ON j.id = a.job_id
       WHERE j.employer_id = $1

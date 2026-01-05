@@ -88,40 +88,32 @@ export const getSeekerApplications = async (req, res) => {
   }
 };
 
-export const getJobApplications = async (req, res) => {
-  try {
-    const { jobId } = req.params;
+  export const getJobApplications = async (req, res) => {
+    try {
+      const { jobId } = req.params;
+      const employerId = req.user.id;
 
-    const job = await Job.findById(jobId);
-    if (!job) {
-      return res.status(404).json({
-        success: false,
-        error: 'Job not found'
-      });
+      
+      const job = await Job.findById(jobId);
+      
+      if (!job) {
+        return res.status(404).json({ success: false, error: 'Job not found' });
+      }
+
+      
+      if (String(job.employer_id) !== String(employerId)) {
+        return res.status(403).json({ 
+          success: false, 
+          error: 'Not authorized to view applications for this job' 
+        });
+      }
+
+      const applications = await Application.findByJobId(jobId);
+      res.json({ success: true, data: applications });
+    } catch (error) {
+      res.status(500).json({ success: false, error: error.message });
     }
-
-    if (job.employer_id !== req.user.id) {
-      return res.status(403).json({
-        success: false,
-        error: 'Not authorized to view applications for this job'
-      });
-    }
-
-    const applications = await Application.findByJobId(jobId);
-
-    res.json({
-      success: true,
-      count: applications.length,
-      data: applications
-    });
-  } catch (error) {
-    console.error('Get job applications error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Server error while fetching applications'
-    });
-  }
-};
+  };
 
 export const getEmployerApplications = async (req, res) => {
   try {

@@ -2,6 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config'; 
 import { initializeDatabase } from './config/database.js'; 
+import fs from 'fs';
+const uploadDir = 'uploads/resumes';
+
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // Import Routes
 import authRoutes from './routes/auth.js';
@@ -33,6 +39,13 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   optionsSuccessStatus: 204 
 }));
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
+  next();
+});
 
 
 app.use(express.json()); 
@@ -82,3 +95,6 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
+
+
+
